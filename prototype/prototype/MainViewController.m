@@ -13,6 +13,7 @@
     UIView *_leftPanelView;
     UIView *_videoPreviewView;
     UIView *_timelineView;
+    UILabel *_previewLabel;
     MPMoviePlayerController *_myPlayer;
 }
 
@@ -32,9 +33,20 @@
     _timelineView.backgroundColor = [UIColor yellowColor];
     [self.view addSubview:_timelineView];
     
+    
+    // Preview
     _videoPreviewView = [[UIView alloc] initWithFrame:CGRectMake(_leftPanelView.frame.size.width, 0, screenWidth - _leftPanelView.frame.size.width, screenHeight / 2)];
-    _videoPreviewView.backgroundColor = [UIColor purpleColor];
+    _videoPreviewView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:_videoPreviewView];
+    
+    _previewLabel = [[UILabel alloc] init];
+    _previewLabel.text = @"Preview";
+    _previewLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:25];
+    _previewLabel.frame = (CGRect) {.origin = {10, 5}};
+    _previewLabel.textColor = [UIColor whiteColor];
+    _previewLabel.textAlignment = NSTextAlignmentLeft;
+    [_previewLabel sizeToFit];
+    [_videoPreviewView addSubview:_previewLabel];
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"testVideo" ofType:@"mp4"];
     // Add the video player
