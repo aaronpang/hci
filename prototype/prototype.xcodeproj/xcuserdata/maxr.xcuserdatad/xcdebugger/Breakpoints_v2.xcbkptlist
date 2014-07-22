@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "prototype/MainViewController.m"
-            timestampString = "427743600.102032"
+            filePath = "prototype/VideoFileView.m"
+            timestampString = "427752287.563118"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
-            landmarkName = "-videoFileView:draggedFromPosition:toPosition:"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "-leftGrow:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

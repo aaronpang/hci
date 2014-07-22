@@ -17,7 +17,8 @@
 
 @property (weak, nonatomic) id<VideoFileViewDelegate> delegate;
 
+@property (assign, nonatomic) BOOL editable;
+
 - (void)setTitle:(NSString *)title;
-- (void)setEditable:(BOOL)editable;
 
 @end

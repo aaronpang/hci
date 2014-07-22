@@ -21,9 +21,6 @@
 - (instancetype)init {
   if (self = [super init]) {
     self.userInteractionEnabled = YES;
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(viewDidPan:)];
-    pan.delegate = self;
-    [self addGestureRecognizer:pan];
     self.backgroundColor = [UIColor colorWithRed:5.0/255.0 green:98.0/255.0 blue:98.0/255.0 alpha:1];
     self.layer.cornerRadius = 3.0;
     self.layer.borderColor = [UIColor colorWithWhite:0.5 alpha:1.0].CGColor;
@@ -38,9 +35,10 @@
     [self addSubview:_titleView];
 
     _rightArrow = [[UILabel alloc] init];
-    _rightArrow.frame = CGRectMake(280, 0, 20, 100);
+    _rightArrow.frame = CGRectMake(260, 0, 20, 100);
     _rightArrow.text = @"◀︎";
     _rightArrow.backgroundColor = [UIColor colorWithRed:5.0/255.0 green:130.0/255.0 blue:130.0/255.0 alpha:1];
+    _rightArrow.userInteractionEnabled = YES;
     [self addSubview:_rightArrow];
 
 
@@ -49,7 +47,25 @@
     _leftArrow.text = @"▶︎";
     _leftArrow.backgroundColor = [UIColor colorWithRed:5.0/255.0 green:130.0/255.0 blue:130.0/255.0 alpha:1];
     _leftArrow.textAlignment = NSTextAlignmentRight;
+    _leftArrow.userInteractionEnabled = YES;
     [self addSubview:_leftArrow];
+
+
+
+    UIPanGestureRecognizer *rightGrow = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(rightGrow:)];
+    rightGrow.delegate = self;
+    [_rightArrow addGestureRecognizer:rightGrow];
+
+    UIPanGestureRecognizer *leftGrow = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(leftGrow:)];
+    leftGrow.delegate = self;
+    [_leftArrow addGestureRecognizer:leftGrow];
+
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(viewDidPan:)];
+    pan.delegate = self;
+    [pan requireGestureRecognizerToFail:rightGrow];
+    [pan requireGestureRecognizerToFail:leftGrow];
+    [self addGestureRecognizer:pan];
+    self.editable = NO;
   }
   return self;
 }
@@ -70,7 +86,35 @@
   self.titleView.text = title;
 }
 
+- (void)rightGrow:(UIPanGestureRecognizer *)sender {
+  CGPoint translatedPoint = [(UIPanGestureRecognizer*)sender translationInView:[self superview]];
+  if (sender.state == UIGestureRecognizerStateBegan) {
+    [self.superview bringSubviewToFront:self];
+    self.firstX = self.frame.size.width;
+  }
+  self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.firstX + translatedPoint.x, self.frame.size.height);
+}
+
+- (void)leftGrow:(UIPanGestureRecognizer *)sender {
+  CGPoint translatedPoint = [(UIPanGestureRecognizer*)sender translationInView:[self superview]];
+  if (sender.state == UIGestureRecognizerStateBegan) {
+    [self.superview bringSubviewToFront:self];
+    self.firstX = self.frame.size.width;
+    self.firstY = self.frame.origin.x;
+  }
+  self.frame = CGRectMake(self.firstY + translatedPoint.x, self.frame.origin.y, self.firstX - translatedPoint.x, self.frame.size.height);
+}
+
+- (void)setFrame:(CGRect)frame {
+  [super setFrame:frame];
+  self.rightArrow.frame = CGRectMake(frame.size.width - (self.editable ? 20 : 0), 0, 20, frame.size.height);
+  self.leftArrow.frame = CGRectMake(self.editable ? 0 : -20, 0, 20, frame.size.height);
+  self.titleView.frame = CGRectMake(10, 10, frame.size.width - 20, frame.size.height - 20);
+
+}
+
 - (void)setEditable:(BOOL)editable {
+  _editable = editable;
   if (editable) {
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
       self.rightArrow.frame = CGRectMake(self.frame.size.width - 20, 0, 20, 100);
