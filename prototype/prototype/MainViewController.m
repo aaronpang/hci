@@ -18,6 +18,7 @@
     UILabel *_videoFilesLabel;
     UILabel *_timelineLabel;
     MPMoviePlayerController *_myPlayer;
+    NSMutableArray *_importClips;
 }
 
 -(void)viewDidLoad {
@@ -84,10 +85,35 @@
     _videoFilesLabel.textAlignment = NSTextAlignmentLeft;
     [_videoFilesLabel sizeToFit];
     [_leftPanelView addSubview:_videoFilesLabel];
+    _importClips = [NSMutableArray array];
+    
+    for (int i = 0; i < 5; i++) {
+        VideoFileView *videoFileView = [[VideoFileView alloc] init];
+        videoFileView.frame = CGRectMake(10, 40 + 110*i, 280, 100);
+        [videoFileView setTitle:[NSString stringWithFormat:@"Sample Video Clip %d", i+1]];
+        videoFileView.delegate = self;
+        [_importClips addObject:videoFileView];
+        [self.view addSubview:videoFileView];
+
+    }
 }
 
 - (void)videoFileView:(VideoFileView *)view draggedFromPosition:(CGPoint)start toPosition:(CGPoint)end {
-  //do something
+  if (view.frame.origin.x > 300 && view.frame.origin.y > _timelineView.frame.origin.y) {
+    [_importClips removeObject:view];
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
+      int y = 40;
+      for (VideoFileView *v in _importClips) {
+        v.frame = CGRectMake(10, y, 280, 100);
+        y += 110;
+      }
+    } completion:nil];
+    [view setEditable:YES];
+  } else {
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
+      view.frame = CGRectMake(start.x, start.y, 280, 100);
+    } completion:nil];
+  }
 }
 
 @end
