@@ -101,13 +101,12 @@
 - (void)videoFileView:(VideoFileView *)view draggedFromPosition:(CGPoint)start toPosition:(CGPoint)end {
   if (view.frame.origin.x > 300 && view.frame.origin.y > _timelineView.frame.origin.y) {
     [_importClips removeObject:view];
-    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
-      int y = 40;
-      for (VideoFileView *v in _importClips) {
-        v.frame = CGRectMake(10, y, 280, 100);
-        y += 110;
+      for (int i = 0; i < [_importClips count]; i++) {
+        VideoFileView *v = _importClips[i];
+        [UIView animateWithDuration:0.5 delay:0.05*i usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
+          v.frame = CGRectMake(10, 40 + 110*i, 280, 100);
+        } completion:nil];
       }
-    } completion:nil];
     [view setEditable:YES];
   } else {
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
