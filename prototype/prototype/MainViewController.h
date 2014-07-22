@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VideoFileView.h"
 
-@interface MainViewController : UIViewController
+@interface MainViewController : UIViewController <VideoFileViewDelegate>
 
 @end
