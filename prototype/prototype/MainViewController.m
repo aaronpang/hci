@@ -7,6 +7,7 @@
 //
 
 #import "MainViewController.h"
+#import <QuartzCore/QuartzCore.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "VideoFileView.h"
 
@@ -17,8 +18,11 @@
     UILabel *_previewLabel;
     UILabel *_videoFilesLabel;
     UILabel *_timelineLabel;
+    UIButton *_playButton;
     MPMoviePlayerController *_myPlayer;
     NSMutableArray *_importClips;
+    UIView *_timelineLine;
+    BOOL _moveTimeline;
 }
 
 -(void)viewDidLoad {
@@ -33,8 +37,6 @@
     _leftPanelView.backgroundColor = [UIColor blueColor];
     [self.view addSubview:_leftPanelView];
     
-    
-    
     _timelineView = [[UIView alloc] initWithFrame:CGRectMake(_leftPanelView.frame.size.width, screenHeight / 2, screenWidth - _leftPanelView.frame.size.width, screenHeight / 2)];
     _timelineView.backgroundColor = [UIColor grayColor];
     [self.view addSubview:_timelineView];
@@ -47,6 +49,24 @@
     _timelineLabel.textAlignment = NSTextAlignmentLeft;
     [_timelineLabel sizeToFit];
     [_timelineView addSubview:_timelineLabel];
+    
+    _playButton = [[UIButton alloc] init];
+    [_playButton setTitle:@"  PLAY  " forState:UIControlStateNormal];
+    [_playButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_playButton addTarget:self action:@selector(playButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_playButton setBackgroundColor:[UIColor greenColor]];
+    _playButton.layer.cornerRadius = 10.0f;
+    _playButton.frame = (CGRect) {.origin = {325,5}};
+    [_playButton sizeToFit];
+    [_timelineView addSubview:_playButton];
+    
+    UIView *timelineDivider = [[UIView alloc] initWithFrame:CGRectMake(0, _timelineLabel.frame.size.height + 7, _timelineView.frame.size.width, 1)];
+    timelineDivider.backgroundColor = [UIColor whiteColor];
+    [_timelineView addSubview:timelineDivider];
+    
+    _timelineLine = [[UIView alloc] initWithFrame:CGRectMake(0, timelineDivider.frame.origin.y + timelineDivider.frame.size.height, 1, _timelineView.frame.size.height - (timelineDivider.frame.origin.y + timelineDivider.frame.size.height))];
+    _timelineLine.backgroundColor = [UIColor yellowColor];
+    [_timelineView addSubview:_timelineLine];
     
     // Preview
     _videoPreviewView = [[UIView alloc] initWithFrame:CGRectMake(_leftPanelView.frame.size.width, 0, screenWidth - _leftPanelView.frame.size.width, screenHeight / 2)];
@@ -73,10 +93,6 @@
     _myPlayer.view.frame = CGRectMake(100, 50, _videoPreviewView.frame.size.width - 200, _videoPreviewView.frame.size.height - 100);
     [_videoPreviewView addSubview:_myPlayer.view];
 
-    VideoFileView *videoFileView = [[VideoFileView alloc] init];
-    videoFileView.frame = CGRectMake(10, 10, 100, 100);
-    [self.view addSubview:videoFileView];
-    
     _videoFilesLabel = [[UILabel alloc] init];
     _videoFilesLabel.text = @"Video Files";
     _videoFilesLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:25];
@@ -95,6 +111,36 @@
         [_importClips addObject:videoFileView];
         [self.view addSubview:videoFileView];
 
+    }
+}
+
+- (void)playButtonPressed:(id)sender {
+    if ([_playButton.titleLabel.text isEqualToString:@"  PLAY  "]) {
+        [_myPlayer prepareToPlay];
+        [_myPlayer play];
+        [_playButton setTitle:@"  PAUSE  " forState:UIControlStateNormal];
+        [_playButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_playButton setBackgroundColor:[UIColor redColor]];
+        [_playButton sizeToFit];
+        _moveTimeline = YES;
+        [self performSelector:@selector(moveTimeLine:) withObject:nil afterDelay:0.0f];
+    } else {
+        [_myPlayer pause];
+        [_playButton setTitle:@"  PLAY  " forState:UIControlStateNormal];
+        [_playButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_playButton setBackgroundColor:[UIColor greenColor]];
+        [_playButton sizeToFit];
+        _moveTimeline = NO;
+    }
+}
+
+- (void)moveTimeLine:(id)sender {
+    if (_moveTimeline) {
+        _timelineLine.frame = (CGRect) {.origin = {_timelineLine.frame.origin.x + 2, _timelineLine.frame.origin.y}, .size = _timelineLine.frame.size};
+        if (_timelineLine.frame.origin.x > _timelineView.frame.size.width) {
+            _timelineLine.frame = (CGRect) {.origin = {0, _timelineLine.frame.origin.y}, .size = _timelineLine.frame.size};
+        }
+        [self performSelector:@selector(moveTimeLine:) withObject:nil afterDelay:0.01f];
     }
 }
 
