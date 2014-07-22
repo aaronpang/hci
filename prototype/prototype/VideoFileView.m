@@ -104,6 +104,9 @@
   if (sender.state == UIGestureRecognizerStateBegan) {
     [self.superview bringSubviewToFront:self];
     self.firstX = self.frame.size.width;
+    self.rightArrow.textColor = [UIColor whiteColor];
+  } else if (sender.state == UIGestureRecognizerStateEnded) {
+    self.rightArrow.textColor = [UIColor blackColor];
   }
   self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.firstX + translatedPoint.x, self.frame.size.height);
 }
@@ -114,6 +117,9 @@
     [self.superview bringSubviewToFront:self];
     self.firstX = self.frame.size.width;
     self.firstY = self.frame.origin.x;
+    self.leftArrow.textColor = [UIColor whiteColor];
+  } else if (sender.state == UIGestureRecognizerStateEnded) {
+    self.leftArrow.textColor = [UIColor blackColor];
   }
   self.frame = CGRectMake(self.firstY + translatedPoint.x, self.frame.origin.y, self.firstX - translatedPoint.x, self.frame.size.height);
 }

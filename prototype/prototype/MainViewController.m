@@ -67,7 +67,7 @@
     timelineDivider.backgroundColor = [UIColor blackColor];
     [_timelineView addSubview:timelineDivider];
     
-    _timelineLine = [[UIView alloc] initWithFrame:CGRectMake(0, timelineDivider.frame.origin.y + timelineDivider.frame.size.height, 1, _timelineView.frame.size.height - (timelineDivider.frame.origin.y + timelineDivider.frame.size.height))];
+    _timelineLine = [[UIView alloc] initWithFrame:CGRectMake(300, screenHeight/2 + timelineDivider.frame.origin.y + timelineDivider.frame.size.height, 1, _timelineView.frame.size.height - (timelineDivider.frame.origin.y + timelineDivider.frame.size.height))];
     _timelineLine.backgroundColor = [UIColor yellowColor];
 
     UIView *darkView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 43, screenWidth - 300, 105)];
@@ -77,7 +77,7 @@
     darkView2.backgroundColor = [UIColor colorWithWhite:0.3 alpha:1];
     [_timelineView addSubview:darkView2];
 
-  [_timelineView addSubview:_timelineLine];
+  [self.view addSubview:_timelineLine];
 
 
     // Preview
@@ -151,8 +151,8 @@
 - (void)moveTimeLine:(id)sender {
     if (_moveTimeline) {
         _timelineLine.frame = (CGRect) {.origin = {_timelineLine.frame.origin.x + 2, _timelineLine.frame.origin.y}, .size = _timelineLine.frame.size};
-        if (_timelineLine.frame.origin.x > _timelineView.frame.size.width) {
-            _timelineLine.frame = (CGRect) {.origin = {0, _timelineLine.frame.origin.y}, .size = _timelineLine.frame.size};
+        if (_timelineLine.frame.origin.x > _timelineView.frame.origin.x + _timelineView.frame.size.width) {
+            _timelineLine.frame = (CGRect) {.origin = {300, _timelineLine.frame.origin.y}, .size = _timelineLine.frame.size};
         }
         [self performSelector:@selector(moveTimeLine:) withObject:nil afterDelay:0.01f];
     }
@@ -198,13 +198,14 @@
 - (void)updatePreviewVisibility {
   BOOL intersects = NO;
   for (VideoFileView *view in _editClips) {
-    if (_timelineLine.frame.origin.x + 300 >= view.frame.origin.x && _timelineLine.frame.origin.x + 300 <= view.frame.origin.x
+    if (_timelineLine.frame.origin.x >= view.frame.origin.x && _timelineLine.frame.origin.x <= view.frame.origin.x
         + view.frame.size.width) {
       intersects = YES;
       break;
     }
   }
   _myPlayer.view.hidden = !intersects;
+  [self.view bringSubviewToFront:_timelineLine];
 
 }
 
