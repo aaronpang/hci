@@ -15,6 +15,8 @@
     UIView *_videoPreviewView;
     UIView *_timelineView;
     UILabel *_previewLabel;
+    UILabel *_videoFilesLabel;
+    UILabel *_timelineLabel;
     MPMoviePlayerController *_myPlayer;
 }
 
@@ -30,10 +32,20 @@
     _leftPanelView.backgroundColor = [UIColor blueColor];
     [self.view addSubview:_leftPanelView];
     
+    
+    
     _timelineView = [[UIView alloc] initWithFrame:CGRectMake(_leftPanelView.frame.size.width, screenHeight / 2, screenWidth - _leftPanelView.frame.size.width, screenHeight / 2)];
-    _timelineView.backgroundColor = [UIColor yellowColor];
+    _timelineView.backgroundColor = [UIColor grayColor];
     [self.view addSubview:_timelineView];
     
+    _timelineLabel = [[UILabel alloc] init];
+    _timelineLabel.text = @"Timeline";
+    _timelineLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:25];
+    _timelineLabel.frame = (CGRect) {.origin = {10, 5}};
+    _timelineLabel.textColor = [UIColor whiteColor];
+    _timelineLabel.textAlignment = NSTextAlignmentLeft;
+    [_timelineLabel sizeToFit];
+    [_timelineView addSubview:_timelineLabel];
     
     // Preview
     _videoPreviewView = [[UIView alloc] initWithFrame:CGRectMake(_leftPanelView.frame.size.width, 0, screenWidth - _leftPanelView.frame.size.width, screenHeight / 2)];
@@ -57,13 +69,21 @@
     _myPlayer.movieSourceType = MPMovieSourceTypeFile;
     _myPlayer.controlStyle = MPMovieControlStyleNone;
     _myPlayer.scalingMode = MPMovieScalingModeFill;
-    [_myPlayer prepareToPlay];
     _myPlayer.view.frame = CGRectMake(100, 50, _videoPreviewView.frame.size.width - 200, _videoPreviewView.frame.size.height - 100);
     [_videoPreviewView addSubview:_myPlayer.view];
-    [_myPlayer play];
+
     VideoFileView *videoFileView = [[VideoFileView alloc] init];
     videoFileView.frame = CGRectMake(10, 10, 100, 100);
     [self.view addSubview:videoFileView];
+    
+    _videoFilesLabel = [[UILabel alloc] init];
+    _videoFilesLabel.text = @"Video Files";
+    _videoFilesLabel.font = [UIFont fontWithName:@"AvenirNext-Regular" size:25];
+    _videoFilesLabel.frame = (CGRect) {.origin = {10, 5}};
+    _videoFilesLabel.textColor = [UIColor whiteColor];
+    _videoFilesLabel.textAlignment = NSTextAlignmentLeft;
+    [_videoFilesLabel sizeToFit];
+    [_leftPanelView addSubview:_videoFilesLabel];
 }
 
 - (void)videoFileView:(VideoFileView *)view draggedFromPosition:(CGPoint)start toPosition:(CGPoint)end {
