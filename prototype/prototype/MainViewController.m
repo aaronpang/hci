@@ -21,6 +21,7 @@
     UIButton *_playButton;
     MPMoviePlayerController *_myPlayer;
     NSMutableArray *_importClips;
+    NSMutableArray *_editClips;
     UIView *_timelineLine;
     BOOL _moveTimeline;
 }
@@ -34,11 +35,15 @@
     
     // Add the three views
     _leftPanelView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, screenHeight)];
-    _leftPanelView.backgroundColor = [UIColor blueColor];
+    _leftPanelView.backgroundColor = [UIColor colorWithWhite:0.27 alpha:1];
     [self.view addSubview:_leftPanelView];
     
     _timelineView = [[UIView alloc] initWithFrame:CGRectMake(_leftPanelView.frame.size.width, screenHeight / 2, screenWidth - _leftPanelView.frame.size.width, screenHeight / 2)];
-    _timelineView.backgroundColor = [UIColor grayColor];
+//<<<<<<< Updated upstream
+//    _timelineView.backgroundColor = [UIColor grayColor];
+//=======
+    _timelineView.backgroundColor = [UIColor colorWithWhite:0.36 alpha:1];
+//>>>>>>> Stashed changes
     [self.view addSubview:_timelineView];
     
     _timelineLabel = [[UILabel alloc] init];
@@ -54,14 +59,14 @@
     [_playButton setTitle:@"  PLAY  " forState:UIControlStateNormal];
     [_playButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_playButton addTarget:self action:@selector(playButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [_playButton setBackgroundColor:[UIColor greenColor]];
-    _playButton.layer.cornerRadius = 10.0f;
+    [_playButton setBackgroundColor:[UIColor colorWithRed:0.15 green:0.75 blue:0.35 alpha:1]];
+    _playButton.layer.cornerRadius = 5.0f;
     _playButton.frame = (CGRect) {.origin = {325,5}};
     [_playButton sizeToFit];
     [_timelineView addSubview:_playButton];
     
-    UIView *timelineDivider = [[UIView alloc] initWithFrame:CGRectMake(0, _timelineLabel.frame.size.height + 7, _timelineView.frame.size.width, 1)];
-    timelineDivider.backgroundColor = [UIColor whiteColor];
+    UIView *timelineDivider = [[UIView alloc] initWithFrame:CGRectMake(3, _timelineLabel.frame.size.height + 7, _timelineView.frame.size.width - 6, 0.5)];
+    timelineDivider.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
     [_timelineView addSubview:timelineDivider];
     
     _timelineLine = [[UIView alloc] initWithFrame:CGRectMake(0, timelineDivider.frame.origin.y + timelineDivider.frame.size.height, 1, _timelineView.frame.size.height - (timelineDivider.frame.origin.y + timelineDivider.frame.size.height))];
@@ -70,7 +75,11 @@
     
     // Preview
     _videoPreviewView = [[UIView alloc] initWithFrame:CGRectMake(_leftPanelView.frame.size.width, 0, screenWidth - _leftPanelView.frame.size.width, screenHeight / 2)];
+//<<<<<<< Updated upstream
     _videoPreviewView.backgroundColor = [UIColor blackColor];
+//=======
+//    _videoPreviewView.backgroundColor = [UIColor colorWithWhite:0.42 alpha:1];
+//>>>>>>> Stashed changes
     [self.view addSubview:_videoPreviewView];
     
     _previewLabel = [[UILabel alloc] init];
@@ -112,6 +121,7 @@
         [self.view addSubview:videoFileView];
 
     }
+    _editClips = [NSMutableArray array];
 }
 
 - (void)playButtonPressed:(id)sender {
@@ -120,7 +130,7 @@
         [_myPlayer play];
         [_playButton setTitle:@"  PAUSE  " forState:UIControlStateNormal];
         [_playButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_playButton setBackgroundColor:[UIColor redColor]];
+        [_playButton setBackgroundColor:[UIColor colorWithRed:0.8 green:0.2 blue:0.2 alpha:1]];
         [_playButton sizeToFit];
         _moveTimeline = YES;
         [self performSelector:@selector(moveTimeLine:) withObject:nil afterDelay:0.0f];
@@ -128,7 +138,7 @@
         [_myPlayer pause];
         [_playButton setTitle:@"  PLAY  " forState:UIControlStateNormal];
         [_playButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_playButton setBackgroundColor:[UIColor greenColor]];
+        [_playButton setBackgroundColor:[UIColor colorWithRed:0.15 green:0.75 blue:0.35 alpha:1]];
         [_playButton sizeToFit];
         _moveTimeline = NO;
     }
@@ -142,6 +152,7 @@
         }
         [self performSelector:@selector(moveTimeLine:) withObject:nil afterDelay:0.01f];
     }
+    [self updatePreviewVisibility];
 }
 
 - (void)videoFileView:(VideoFileView *)view draggedFromPosition:(CGPoint)start toPosition:(CGPoint)end {
@@ -154,11 +165,43 @@
         } completion:nil];
       }
     [view setEditable:YES];
+
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
+      int y = (((int)(view.frame.origin.y - _timelineView.frame.origin.y))/105) * 105;
+      view.frame = CGRectMake(view.frame.origin.x, _timelineView.frame.origin.y + y + 45, view.frame.size.width, view.frame.size.height);
+    } completion:nil];
+    [_editClips addObject:view];
+
+  } else if (view.frame.origin.x < 230 && ![_importClips containsObject:view]) {
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
+      view.frame = CGRectMake(10, _importClips.count * 110 + 40, 280, 100);
+    } completion:nil];
+    view.editable = NO;
+    [_importClips addObject:view];
+    [_editClips removeObject:view];
   } else {
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
-      view.frame = CGRectMake(start.x, start.y, 280, 100);
+      view.frame = CGRectMake(start.x, start.y, view.frame.size.width, view.frame.size.height);
     } completion:nil];
   }
+  [self updatePreviewVisibility];
+}
+
+- (BOOL)prefersStatusBarHidden {
+  return YES;
+}
+
+- (void)updatePreviewVisibility {
+  BOOL intersects = NO;
+  for (VideoFileView *view in _editClips) {
+    if (_timelineLine.frame.origin.x + 300 >= view.frame.origin.x && _timelineLine.frame.origin.x + 300 <= view.frame.origin.x
+        + view.frame.size.width) {
+      intersects = YES;
+      break;
+    }
+  }
+  _myPlayer.view.hidden = !intersects;
+
 }
 
 @end

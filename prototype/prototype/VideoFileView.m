@@ -23,31 +23,35 @@
     self.userInteractionEnabled = YES;
     self.backgroundColor = [UIColor colorWithRed:5.0/255.0 green:98.0/255.0 blue:98.0/255.0 alpha:1];
     self.layer.cornerRadius = 3.0;
-    self.layer.borderColor = [UIColor colorWithWhite:0.5 alpha:1.0].CGColor;
+    self.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1.0].CGColor;
     self.layer.borderWidth = 0.5;
     self.clipsToBounds = YES;
     self.layer.masksToBounds = YES;
 
     _titleView = [[UILabel alloc] init];
     _titleView.textAlignment = NSTextAlignmentCenter;
-    _titleView.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
+    _titleView.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:21];
     _titleView.frame = CGRectMake(10, 10, 270, 80);
+    _titleView.textColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     [self addSubview:_titleView];
 
     _rightArrow = [[UILabel alloc] init];
     _rightArrow.frame = CGRectMake(260, 0, 20, 100);
     _rightArrow.text = @"◀︎";
-    _rightArrow.backgroundColor = [UIColor colorWithRed:5.0/255.0 green:130.0/255.0 blue:130.0/255.0 alpha:1];
+    _rightArrow.backgroundColor = [UIColor colorWithRed:90.0/255.0 green:120.0/255.0 blue:150.0/255.0 alpha:1];
     _rightArrow.userInteractionEnabled = YES;
+    _rightArrow.textAlignment = NSTextAlignmentCenter;
+    _rightArrow.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
     [self addSubview:_rightArrow];
 
 
     _leftArrow = [[UILabel alloc] init];
     _leftArrow.frame = CGRectMake(-20, 0, 20, 100);
     _leftArrow.text = @"▶︎";
-    _leftArrow.backgroundColor = [UIColor colorWithRed:5.0/255.0 green:130.0/255.0 blue:130.0/255.0 alpha:1];
-    _leftArrow.textAlignment = NSTextAlignmentRight;
+    _leftArrow.backgroundColor = [UIColor colorWithRed:90.0/255.0 green:120.0/255.0 blue:150.0/255.0 alpha:1];
     _leftArrow.userInteractionEnabled = YES;
+    _leftArrow.textAlignment = NSTextAlignmentCenter;
+    _leftArrow.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
     [self addSubview:_leftArrow];
 
 
@@ -66,6 +70,10 @@
     [pan requireGestureRecognizerToFail:leftGrow];
     [self addGestureRecognizer:pan];
     self.editable = NO;
+
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewDidTap:)];
+    tap.delegate = self;
+    [self addGestureRecognizer:tap];
   }
   return self;
 }
@@ -82,6 +90,11 @@
     [self.delegate videoFileView:self draggedFromPosition:CGPointMake(self.firstX, self.firstY) toPosition:self.frame.origin];
   }
 }
+
+- (void)viewDidTap:(UITapGestureRecognizer *)sender {
+  [self.superview bringSubviewToFront:self];
+}
+
 - (void)setTitle:(NSString *)title; {
   self.titleView.text = title;
 }
@@ -106,11 +119,11 @@
 }
 
 - (void)setFrame:(CGRect)frame {
-  CGRect actualFrame = CGRectMake(frame.origin.x, frame.origin.y, MAX(42,frame.size.width), MAX(0, frame.size.height));
+  CGRect actualFrame = CGRectMake(frame.origin.x, frame.origin.y, MAX(62,frame.size.width), MAX(0, frame.size.height));
   [super setFrame:actualFrame];
-  self.rightArrow.frame = CGRectMake(actualFrame.size.width - (self.editable ? 20 : 0), 0, 20, actualFrame.size.height);
-  self.leftArrow.frame = CGRectMake(self.editable ? 0 : -20, 0, 20, actualFrame.size.height);
-  self.titleView.frame = CGRectMake(10, 10, actualFrame.size.width - 20, actualFrame.size.height - 20);
+  self.rightArrow.frame = CGRectMake(actualFrame.size.width - (self.editable ? 30 : 0), 0, 30, actualFrame.size.height);
+  self.leftArrow.frame = CGRectMake(self.editable ? 0 : -30, 0, 30, actualFrame.size.height);
+  self.titleView.frame = CGRectMake(30, 10, actualFrame.size.width - 60, actualFrame.size.height - 20);
 
 }
 
@@ -118,14 +131,15 @@
   _editable = editable;
   if (editable) {
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
-      self.rightArrow.frame = CGRectMake(self.frame.size.width - 20, 0, 20, 100);
-      self.leftArrow.frame = CGRectMake(0, 0, 20, 100);
+      self.rightArrow.frame = CGRectMake(self.frame.size.width - 30, 0, 30, 100);
+      self.leftArrow.frame = CGRectMake(0, 0, 30, 100);
+      self.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:90.0/255.0 blue:120.0/255.0 alpha:1];
     } completion:nil];
   } else {
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
-      self.rightArrow.frame = CGRectMake(self.frame.size.width, 0, 20, 100);
-      self.leftArrow.frame = CGRectMake(-20, 0, 20, 100);
-
+      self.rightArrow.frame = CGRectMake(self.frame.size.width, 0, 30, 100);
+      self.leftArrow.frame = CGRectMake(-30, 0, 30, 100);
+      self.backgroundColor = [UIColor colorWithRed:5.0/255.0 green:98.0/255.0 blue:98.0/255.0 alpha:1];;
     } completion:nil];
   }
 }
