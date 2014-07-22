@@ -24,6 +24,7 @@
     NSMutableArray *_editClips;
     UIView *_timelineLine;
     BOOL _moveTimeline;
+
 }
 
 -(void)viewDidLoad {
@@ -36,14 +37,11 @@
     // Add the three views
     _leftPanelView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, screenHeight)];
     _leftPanelView.backgroundColor = [UIColor colorWithWhite:0.27 alpha:1];
+    _leftPanelView.layer.borderWidth = 0.5;
     [self.view addSubview:_leftPanelView];
     
     _timelineView = [[UIView alloc] initWithFrame:CGRectMake(_leftPanelView.frame.size.width, screenHeight / 2, screenWidth - _leftPanelView.frame.size.width, screenHeight / 2)];
-//<<<<<<< Updated upstream
-//    _timelineView.backgroundColor = [UIColor grayColor];
-//=======
     _timelineView.backgroundColor = [UIColor colorWithWhite:0.36 alpha:1];
-//>>>>>>> Stashed changes
     [self.view addSubview:_timelineView];
     
     _timelineLabel = [[UILabel alloc] init];
@@ -65,21 +63,27 @@
     [_playButton sizeToFit];
     [_timelineView addSubview:_playButton];
     
-    UIView *timelineDivider = [[UIView alloc] initWithFrame:CGRectMake(3, _timelineLabel.frame.size.height + 7, _timelineView.frame.size.width - 6, 0.5)];
-    timelineDivider.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
+    UIView *timelineDivider = [[UIView alloc] initWithFrame:CGRectMake(0, _timelineLabel.frame.size.height + 7, _timelineView.frame.size.width, 0.5)];
+    timelineDivider.backgroundColor = [UIColor blackColor];
     [_timelineView addSubview:timelineDivider];
     
     _timelineLine = [[UIView alloc] initWithFrame:CGRectMake(0, timelineDivider.frame.origin.y + timelineDivider.frame.size.height, 1, _timelineView.frame.size.height - (timelineDivider.frame.origin.y + timelineDivider.frame.size.height))];
     _timelineLine.backgroundColor = [UIColor yellowColor];
-    [_timelineView addSubview:_timelineLine];
-    
+
+    UIView *darkView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 43, screenWidth - 300, 105)];
+    darkView1.backgroundColor = [UIColor colorWithWhite:0.3 alpha:1];
+    [_timelineView addSubview:darkView1];
+    UIView *darkView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 43 + 210, screenWidth - 300, 105)];
+    darkView2.backgroundColor = [UIColor colorWithWhite:0.3 alpha:1];
+    [_timelineView addSubview:darkView2];
+
+  [_timelineView addSubview:_timelineLine];
+
+
     // Preview
     _videoPreviewView = [[UIView alloc] initWithFrame:CGRectMake(_leftPanelView.frame.size.width, 0, screenWidth - _leftPanelView.frame.size.width, screenHeight / 2)];
-//<<<<<<< Updated upstream
     _videoPreviewView.backgroundColor = [UIColor blackColor];
-//=======
-//    _videoPreviewView.backgroundColor = [UIColor colorWithWhite:0.42 alpha:1];
-//>>>>>>> Stashed changes
+
     [self.view addSubview:_videoPreviewView];
     
     _previewLabel = [[UILabel alloc] init];
@@ -111,7 +115,7 @@
     [_videoFilesLabel sizeToFit];
     [_leftPanelView addSubview:_videoFilesLabel];
     _importClips = [NSMutableArray array];
-    
+  [self.view bringSubviewToFront:_leftPanelView];
     for (int i = 0; i < 5; i++) {
         VideoFileView *videoFileView = [[VideoFileView alloc] init];
         videoFileView.frame = CGRectMake(10, 40 + 110*i, 280, 100);
