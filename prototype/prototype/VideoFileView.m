@@ -106,10 +106,11 @@
 }
 
 - (void)setFrame:(CGRect)frame {
-  [super setFrame:frame];
-  self.rightArrow.frame = CGRectMake(frame.size.width - (self.editable ? 20 : 0), 0, 20, frame.size.height);
-  self.leftArrow.frame = CGRectMake(self.editable ? 0 : -20, 0, 20, frame.size.height);
-  self.titleView.frame = CGRectMake(10, 10, frame.size.width - 20, frame.size.height - 20);
+  CGRect actualFrame = CGRectMake(frame.origin.x, frame.origin.y, MAX(42,frame.size.width), MAX(0, frame.size.height));
+  [super setFrame:actualFrame];
+  self.rightArrow.frame = CGRectMake(actualFrame.size.width - (self.editable ? 20 : 0), 0, 20, actualFrame.size.height);
+  self.leftArrow.frame = CGRectMake(self.editable ? 0 : -20, 0, 20, actualFrame.size.height);
+  self.titleView.frame = CGRectMake(10, 10, actualFrame.size.width - 20, actualFrame.size.height - 20);
 
 }
 
