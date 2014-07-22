@@ -8,6 +8,13 @@
 
 #import "MainViewController.h"
 
-@implementation MainViewController
+@implementation MainViewController {
+    
+}
+
+-(void)viewDidLoad {
+    [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor redColor]];
+}
 
 @end
