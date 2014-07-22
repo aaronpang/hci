@@ -8,6 +8,7 @@
 
 #import "MainViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "VideoFileView.h"
 
 @implementation MainViewController {
     UIView *_leftPanelView;
@@ -48,6 +49,13 @@
     _myPlayer.view.frame = CGRectMake(100, 50, _videoPreviewView.frame.size.width - 200, _videoPreviewView.frame.size.height - 100);
     [_videoPreviewView addSubview:_myPlayer.view];
     [_myPlayer play];
+    VideoFileView *videoFileView = [[VideoFileView alloc] init];
+    videoFileView.frame = CGRectMake(10, 10, 100, 100);
+    [self.view addSubview:videoFileView];
+}
+
+- (void)videoFileView:(VideoFileView *)view draggedFromPosition:(CGPoint)start toPosition:(CGPoint)end {
+  //do something
 }
 
 @end

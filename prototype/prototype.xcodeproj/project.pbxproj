@@ -21,6 +21,7 @@
 		D8BEA4D6197EBF510040B793 /* prototypeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BEA4D5197EBF510040B793 /* prototypeTests.m */; };
 		D8BEA4E1197EBF710040B793 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BEA4E0197EBF710040B793 /* MainViewController.m */; };
 		D8E20AB3197EC48200C30A99 /* testVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D8E20AB2197EC37500C30A99 /* testVideo.mp4 */; };
+		D8BEA4E4197EC16B0040B793 /* VideoFileView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BEA4E3197EC16B0040B793 /* VideoFileView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		D8BEA4DF197EBF710040B793 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		D8BEA4E0197EBF710040B793 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		D8E20AB2197EC37500C30A99 /* testVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = testVideo.mp4; sourceTree = "<group>"; };
+		D8BEA4E2197EC16B0040B793 /* VideoFileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoFileView.h; sourceTree = "<group>"; };
+		D8BEA4E3197EC16B0040B793 /* VideoFileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoFileView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +122,8 @@
 				D8BEA4B7197EBF510040B793 /* Supporting Files */,
 				D8BEA4DF197EBF710040B793 /* MainViewController.h */,
 				D8BEA4E0197EBF710040B793 /* MainViewController.m */,
+				D8BEA4E2197EC16B0040B793 /* VideoFileView.h */,
+				D8BEA4E3197EC16B0040B793 /* VideoFileView.m */,
 			);
 			path = prototype;
 			sourceTree = "<group>";
@@ -250,6 +255,7 @@
 			files = (
 				D8BEA4C1197EBF510040B793 /* AppDelegate.m in Sources */,
 				D8BEA4E1197EBF710040B793 /* MainViewController.m in Sources */,
+				D8BEA4E4197EC16B0040B793 /* VideoFileView.m in Sources */,
 				D8BEA4BD197EBF510040B793 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
