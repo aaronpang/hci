@@ -212,10 +212,11 @@
     [_editClips addObject:view];
 
   } else if (view.frame.origin.x < 230 && ![_importClips containsObject:view]) {
+    view.editable = NO;
+
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
       view.frame = CGRectMake(10, _importClips.count * 110 + 40, 280, 100);
     } completion:nil];
-    view.editable = NO;
     [_importClips addObject:view];
     [_editClips removeObject:view];
   } else {
