@@ -11,6 +11,10 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "VideoFileView.h"
 
+@interface MainViewController () <UIGestureRecognizerDelegate>
+
+@end
+
 @implementation MainViewController {
     UIView *_leftPanelView;
     UIView *_videoPreviewView;
@@ -52,16 +56,7 @@
     _timelineLabel.textAlignment = NSTextAlignmentLeft;
     [_timelineLabel sizeToFit];
     [_timelineView addSubview:_timelineLabel];
-    
-    _playButton = [[UIButton alloc] init];
-    [_playButton setTitle:@"  PLAY  " forState:UIControlStateNormal];
-    [_playButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [_playButton addTarget:self action:@selector(playButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [_playButton setBackgroundColor:[UIColor colorWithRed:0.15 green:0.75 blue:0.35 alpha:1]];
-    _playButton.layer.cornerRadius = 5.0f;
-    _playButton.frame = (CGRect) {.origin = {325,5}};
-    [_playButton sizeToFit];
-    [_timelineView addSubview:_playButton];
+
     
     UIView *timelineDivider = [[UIView alloc] initWithFrame:CGRectMake(0, _timelineLabel.frame.size.height + 7, _timelineView.frame.size.width, 0.5)];
     timelineDivider.backgroundColor = [UIColor blackColor];
@@ -85,6 +80,17 @@
     _videoPreviewView.backgroundColor = [UIColor blackColor];
 
     [self.view addSubview:_videoPreviewView];
+    
+    
+    _playButton = [[UIButton alloc] init];
+    [_playButton setTitle:@"  PLAY  " forState:UIControlStateNormal];
+    [_playButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_playButton addTarget:self action:@selector(playButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [_playButton setBackgroundColor:[UIColor colorWithRed:0.15 green:0.75 blue:0.35 alpha:1]];
+    _playButton.layer.cornerRadius = 5.0f;
+    _playButton.frame = (CGRect) {.origin = {320,5}};
+    [_playButton sizeToFit];
+    [_timelineView addSubview:_playButton];
     
     _previewLabel = [[UILabel alloc] init];
     _previewLabel.text = @"Preview";
@@ -115,7 +121,7 @@
     [_videoFilesLabel sizeToFit];
     [_leftPanelView addSubview:_videoFilesLabel];
     _importClips = [NSMutableArray array];
-  [self.view bringSubviewToFront:_leftPanelView];
+    [self.view bringSubviewToFront:_leftPanelView];
     for (int i = 0; i < 5; i++) {
         VideoFileView *videoFileView = [[VideoFileView alloc] init];
         videoFileView.frame = CGRectMake(10, 40 + 110*i, 280, 100);
@@ -126,6 +132,13 @@
 
     }
     _editClips = [NSMutableArray array];
+    
+    
+    UILongPressGestureRecognizer *longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(moveTimeLineLine:)];
+    [longPressRecognizer setMinimumPressDuration:0.001];
+    longPressRecognizer.delegate = self;
+    [_timelineView addGestureRecognizer:longPressRecognizer];
+    
 }
 
 - (void)playButtonPressed:(id)sender {
@@ -137,7 +150,7 @@
         [_playButton setBackgroundColor:[UIColor colorWithRed:0.8 green:0.2 blue:0.2 alpha:1]];
         [_playButton sizeToFit];
         _moveTimeline = YES;
-        [self performSelector:@selector(moveTimeLine:) withObject:nil afterDelay:0.0f];
+        [self performSelector:@selector(playTimeLineLine:) withObject:nil afterDelay:0.0f];
     } else {
         [_myPlayer pause];
         [_playButton setTitle:@"  PLAY  " forState:UIControlStateNormal];
@@ -148,13 +161,33 @@
     }
 }
 
-- (void)moveTimeLine:(id)sender {
+- (void)moveTimeLineLine:(id)sender {
+    CGPoint tapPoint = [sender locationInView:_timelineView];
+    CGPoint tapPointInView;
+
+    if ([sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        tapPointInView = [_timelineView convertPoint:tapPoint toView:self.view];
+        _timelineLine.frame = (CGRect) {.size = _timelineLine.frame.size, .origin = {tapPointInView.x, _timelineLine.frame.origin.y}};
+    }
+    [self updatePreviewVisibility];
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    
+    // Disallow recognition of tap gestures in the segmented control.
+    if ((touch.view == _playButton)) {//change it to your condition
+        return NO;
+    }
+    return YES;
+}
+
+- (void)playTimeLineLine:(id)sender {
     if (_moveTimeline) {
         _timelineLine.frame = (CGRect) {.origin = {_timelineLine.frame.origin.x + 2, _timelineLine.frame.origin.y}, .size = _timelineLine.frame.size};
         if (_timelineLine.frame.origin.x > _timelineView.frame.origin.x + _timelineView.frame.size.width) {
             _timelineLine.frame = (CGRect) {.origin = {300, _timelineLine.frame.origin.y}, .size = _timelineLine.frame.size};
         }
-        [self performSelector:@selector(moveTimeLine:) withObject:nil afterDelay:0.01f];
+        [self performSelector:@selector(playTimeLineLine:) withObject:nil afterDelay:0.01f];
     }
     [self updatePreviewVisibility];
 }
