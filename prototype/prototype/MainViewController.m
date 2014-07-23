@@ -162,12 +162,14 @@
 }
 
 - (void)moveTimeLineLine:(id)sender {
+    if (_moveTimeline) return;
     CGPoint tapPoint = [sender locationInView:_timelineView];
     CGPoint tapPointInView;
 
     if ([sender isKindOfClass:[UILongPressGestureRecognizer class]]) {
         tapPointInView = [_timelineView convertPoint:tapPoint toView:self.view];
-        _timelineLine.frame = (CGRect) {.size = _timelineLine.frame.size, .origin = {tapPointInView.x, _timelineLine.frame.origin.y}};
+        NSLog(@"%f", tapPointInView.x);
+        _timelineLine.frame = (CGRect) {.size = _timelineLine.frame.size, .origin = {MAX(300,tapPointInView.x), _timelineLine.frame.origin.y}};
     }
     [self updatePreviewVisibility];
 }
