@@ -153,8 +153,8 @@
   self.titleView.frame = CGRectMake(40, 10, actualFrame.size.width - 80, actualFrame.size.height - 20);
   self.lengthView.frame = CGRectMake(40, 65, actualFrame.size.width - 80, 35);
   self.timestampView.frame = CGRectMake(40, 5, actualFrame.size.width - 80, 35);
-  self.lengthView.text = [NSString stringWithFormat:@"Length: %.2fs\nEnd frame: %d", MAX(actualFrame.size.width/140.0,0),(int)((actualFrame.origin.x + actualFrame.size.width - 300)/5.833) ];
-  self.timestampView.text = [NSString stringWithFormat:@"Position: %.2fs\nStart frame: %d", MAX(0,(actualFrame.origin.x - 300)/140.0), (int)((actualFrame.origin.x - 300)/5.833)];
+  self.lengthView.text = [NSString stringWithFormat:@"Length: %.2fs\nEnd frame: %d", MAX(actualFrame.size.width/140.0,0),(int)((actualFrame.origin.x + actualFrame.size.width - 300)/5.6) ];
+  self.timestampView.text = [NSString stringWithFormat:@"Position: %.2fs\nStart frame: %d", MAX(0,(actualFrame.origin.x - 300)/140.0), (int)((actualFrame.origin.x - 300)/5.6)];
 
 }
 
