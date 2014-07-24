@@ -14,6 +14,8 @@
 @property (strong, nonatomic) UILabel *titleView;
 @property (strong, nonatomic) UILabel *rightArrow;
 @property (strong, nonatomic) UILabel *leftArrow;
+@property (strong, nonatomic) UILabel *lengthView;
+@property (strong, nonatomic) UILabel *timestampView;
 @end
 
 @implementation VideoFileView
@@ -35,6 +37,23 @@
     _titleView.textColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     [self addSubview:_titleView];
 
+    _timestampView = [[UILabel alloc] init];
+    _timestampView.frame = CGRectMake(40, 10, 200, 15);
+    _timestampView.textColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+//    _timestampView.text = @"Position: 1.15s";
+    _timestampView.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
+    _timestampView.alpha = 0;
+    [self addSubview:_timestampView];
+
+    _lengthView = [[UILabel alloc] init];
+    _lengthView.frame = CGRectMake(40, 75, 200, 15);
+    _lengthView.textColor = [UIColor colorWithWhite:0.9 alpha:1.0];
+//    _lengthView.text = @"Length: 2.0s";
+    _lengthView.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
+    _lengthView.textAlignment = NSTextAlignmentRight;
+    _lengthView.alpha = 0;
+    [self addSubview:_lengthView];
+
     _rightArrow = [[UILabel alloc] init];
     _rightArrow.frame = CGRectMake(260, 0, 20, 100);
     _rightArrow.text = @"◀︎";
@@ -44,7 +63,6 @@
     _rightArrow.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
     [self addSubview:_rightArrow];
 
-
     _leftArrow = [[UILabel alloc] init];
     _leftArrow.frame = CGRectMake(-20, 0, 20, 100);
     _leftArrow.text = @"▶︎";
@@ -53,6 +71,7 @@
     _leftArrow.textAlignment = NSTextAlignmentCenter;
     _leftArrow.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
     [self addSubview:_leftArrow];
+
 
 
 
@@ -129,7 +148,11 @@
   [super setFrame:actualFrame];
   self.rightArrow.frame = CGRectMake(actualFrame.size.width - (self.editable ? 30 : 0), 0, 30, actualFrame.size.height);
   self.leftArrow.frame = CGRectMake(self.editable ? 0 : -30, 0, 30, actualFrame.size.height);
-  self.titleView.frame = CGRectMake(30, 10, actualFrame.size.width - 60, actualFrame.size.height - 20);
+  self.titleView.frame = CGRectMake(40, 10, actualFrame.size.width - 80, actualFrame.size.height - 20);
+  self.lengthView.frame = CGRectMake(40, 75, actualFrame.size.width - 80, 15);
+  self.timestampView.frame = CGRectMake(40, 10, actualFrame.size.width - 80, 15);
+  self.lengthView.text = [NSString stringWithFormat:@"Length: %.2fs", MAX(actualFrame.size.width/140.0,0)];
+  self.timestampView.text = [NSString stringWithFormat:@"Position: %.2fs", MAX(0,(actualFrame.origin.x - 300)/140.0)];
 
 }
 
@@ -139,12 +162,16 @@
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
       self.rightArrow.frame = CGRectMake(self.frame.size.width - 30, 0, 30, 100);
       self.leftArrow.frame = CGRectMake(0, 0, 30, 100);
+      self.timestampView.alpha = 1;
+      self.lengthView.alpha = 1;
       self.backgroundColor = [UIColor colorWithRed:66.0/255.0 green:90.0/255.0 blue:120.0/255.0 alpha:1];
     } completion:nil];
   } else {
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:13 options:0 animations:^{
       self.rightArrow.frame = CGRectMake(self.frame.size.width, 0, 30, 100);
       self.leftArrow.frame = CGRectMake(-30, 0, 30, 100);
+      self.timestampView.alpha = 0;
+      self.lengthView.alpha = 0;
       self.backgroundColor = [UIColor colorWithRed:5.0/255.0 green:98.0/255.0 blue:98.0/255.0 alpha:1];;
     } completion:nil];
   }
