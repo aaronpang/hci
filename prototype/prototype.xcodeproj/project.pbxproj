@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D8B7EE711985B237003D6B9C /* SplashView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B7EE701985B237003D6B9C /* SplashView.m */; };
 		D8BEA4B1197EBF510040B793 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8BEA4B0197EBF510040B793 /* Foundation.framework */; };
 		D8BEA4B3197EBF510040B793 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8BEA4B2197EBF510040B793 /* CoreGraphics.framework */; };
 		D8BEA4B5197EBF510040B793 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8BEA4B4197EBF510040B793 /* UIKit.framework */; };
@@ -20,8 +21,8 @@
 		D8BEA4D4197EBF510040B793 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D8BEA4D2197EBF510040B793 /* InfoPlist.strings */; };
 		D8BEA4D6197EBF510040B793 /* prototypeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BEA4D5197EBF510040B793 /* prototypeTests.m */; };
 		D8BEA4E1197EBF710040B793 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BEA4E0197EBF710040B793 /* MainViewController.m */; };
-		D8E20AB3197EC48200C30A99 /* testVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D8E20AB2197EC37500C30A99 /* testVideo.mp4 */; };
 		D8BEA4E4197EC16B0040B793 /* VideoFileView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8BEA4E3197EC16B0040B793 /* VideoFileView.m */; };
+		D8E20AB3197EC48200C30A99 /* testVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D8E20AB2197EC37500C30A99 /* testVideo.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D8B7EE6F1985B237003D6B9C /* SplashView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashView.h; sourceTree = "<group>"; };
+		D8B7EE701985B237003D6B9C /* SplashView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplashView.m; sourceTree = "<group>"; };
 		D8BEA4AD197EBF510040B793 /* prototype.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = prototype.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8BEA4B0197EBF510040B793 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D8BEA4B2197EBF510040B793 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -53,9 +56,9 @@
 		D8BEA4D5197EBF510040B793 /* prototypeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = prototypeTests.m; sourceTree = "<group>"; };
 		D8BEA4DF197EBF710040B793 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		D8BEA4E0197EBF710040B793 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		D8E20AB2197EC37500C30A99 /* testVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = testVideo.mp4; sourceTree = "<group>"; };
 		D8BEA4E2197EC16B0040B793 /* VideoFileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoFileView.h; sourceTree = "<group>"; };
 		D8BEA4E3197EC16B0040B793 /* VideoFileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoFileView.m; sourceTree = "<group>"; };
+		D8E20AB2197EC37500C30A99 /* testVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = testVideo.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +127,8 @@
 				D8BEA4E0197EBF710040B793 /* MainViewController.m */,
 				D8BEA4E2197EC16B0040B793 /* VideoFileView.h */,
 				D8BEA4E3197EC16B0040B793 /* VideoFileView.m */,
+				D8B7EE6F1985B237003D6B9C /* SplashView.h */,
+				D8B7EE701985B237003D6B9C /* SplashView.m */,
 			);
 			path = prototype;
 			sourceTree = "<group>";
@@ -253,6 +258,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8B7EE711985B237003D6B9C /* SplashView.m in Sources */,
 				D8BEA4C1197EBF510040B793 /* AppDelegate.m in Sources */,
 				D8BEA4E1197EBF710040B793 /* MainViewController.m in Sources */,
 				D8BEA4E4197EC16B0040B793 /* VideoFileView.m in Sources */,

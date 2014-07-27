@@ -10,6 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "VideoFileView.h"
+#import "SplashView.h"
+
 
 @interface MainViewController () <UIGestureRecognizerDelegate>
 
@@ -138,7 +140,10 @@
     [longPressRecognizer setMinimumPressDuration:0.001];
     longPressRecognizer.delegate = self;
     [_timelineView addGestureRecognizer:longPressRecognizer];
-    
+
+    SplashView *splash = [[SplashView alloc] initWithImage:nil];
+    splash.frame = CGRectMake(0, 0, screenWidth, screenHeight);
+    [self.view addSubview:splash];
 }
 
 - (void)playButtonPressed:(id)sender {
